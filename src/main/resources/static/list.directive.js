@@ -34,9 +34,12 @@
         activate();
 
         function activate() {
-            Digest.countAll().success(function (data) {
-              vm.countAll = data.countAll;
-            })
+            vm.refresh = function (){
+              Digest.getTasks().success(function(data){
+                vm.tasks = data.tasks;
+              });
+            };
+            vm.refresh();
         }
     }
 })();

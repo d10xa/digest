@@ -1,5 +1,6 @@
 package ru.d10xa.jobtracker.job;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalUnit;
 import java.util.UUID;
@@ -11,9 +12,11 @@ public class DigestTask extends FutureTask {
     private final String taskId = UUID.randomUUID().toString();
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private DigestData digestData;
 
     public DigestTask(DigestData digestData, HexGenerator hexGenerator) {
         super(new DigestTaskCallable(digestData, hexGenerator));
+        this.digestData = digestData;
     }
 
     private static class DigestTaskCallable<T> implements Callable<String> {
@@ -56,5 +59,13 @@ public class DigestTask extends FutureTask {
 
     public String getTaskId() {
         return taskId;
+    }
+
+    public Algo getAlgo() {
+        return digestData.getAlgo();
+    }
+
+    public URI getSrc() {
+        return digestData.getSrc();
     }
 }

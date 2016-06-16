@@ -11,7 +11,7 @@
     function Digest($http) {
         var service = {
             schedule: schedule,
-            countAll: countAll
+            getTasks: getTasks
         };
 
         return service;
@@ -19,9 +19,9 @@
         function schedule(digestData) {
             return $http.post("/digest/schedule", digestData);
         }
-
-        function countAll(digestData) {
-            return $http.get("/digest/countAll");
+        
+        function getTasks() {
+            return $http.get("/digest/tasks");
         }
     }
 })();

@@ -10,7 +10,7 @@
                     <li><a href="#" ng-click="vm.digest.algo='sha256'">sha256</a></li>
                 </ul>
             </div>
-            <input type="text" class="form-control" aria-label="...">
+            <input type="text" class="form-control" aria-label="..." ng-model="vm.digest.src">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" ng-click="vm.schedule(vm.digest)">hash</button>
             </span>
