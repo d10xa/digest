@@ -1,4 +1,4 @@
-package ru.d10xa.jobtracker;
+package ru.d10xa.jobtracker.ctrl;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

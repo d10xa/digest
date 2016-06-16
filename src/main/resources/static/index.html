@@ -12,9 +12,14 @@
     <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="starter-template.css" rel="stylesheet">
     <script src="node_modules/angular/angular.js"></script>
+
     <script src="app.module.js"></script>
     <script src="sessionid.service.js"></script>
     <script src="sessionid.ctrl.js"></script>
+    <script src="add.directive.js"></script>
+    <script src="list.directive.js"></script>
+    <script src="digest.service.js"></script>
+
 </head>
 
 <body>
@@ -30,11 +35,18 @@
 <div class="container">
 
     <div class="starter-template">
+        <div class="row">
+          <djt-add/>
+        </div>
 
+        <div class="row">
+          <djt-list/>
+        </div>
     </div>
 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 </html>

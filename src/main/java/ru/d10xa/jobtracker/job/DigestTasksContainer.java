@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 
-class DigestTasksContainer {
+public class DigestTasksContainer {
 
     private final String id;
     private final ExecutorService executorService;
