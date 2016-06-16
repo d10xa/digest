@@ -1,5 +1,9 @@
 package ru.d10xa.jobtracker
 
+import ru.d10xa.jobtracker.job.Algo
+import ru.d10xa.jobtracker.job.DigestData
+import ru.d10xa.jobtracker.job.HexGenerator
+import ru.d10xa.jobtracker.job.HexGeneratorImpl
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -7,6 +11,8 @@ import spock.lang.Unroll
 class DigestSpec extends Specification {
 
     static URL hostsFile = getClass().getResource("/testfiles/hosts")
+
+    HexGenerator hexGenerator = new HexGeneratorImpl()
 
     /**
      * Test data generated via:
@@ -17,11 +23,14 @@ class DigestSpec extends Specification {
      */
     @Unroll
     def 'check #algo hash'() {
+        given:
+        DigestData digest = new DigestData(algo, hostsFile.toURI())
+
         when:
-        Digest digest = new Digest(algo, hostsFile.toURI())
+        String hash = hexGenerator.generate(digest)
 
         then:
-        digest.hash == expectedHash
+        hash == expectedHash
 
         where:
         algo        || expectedHash
