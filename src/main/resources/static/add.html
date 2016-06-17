@@ -3,24 +3,26 @@
         <div class="input-group">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">{{vm.digest.algo}} <span class="caret"></span></button>
+                        aria-haspopup="true" aria-expanded="false">{{vm.digest.algo}} <span class="caret"></span>
+                </button>
                 <ul class="dropdown-menu">
                     <li><a href="#" ng-click="vm.digest.algo='md5'">md5</a></li>
                     <li><a href="#" ng-click="vm.digest.algo='sha1'">sha1</a></li>
                     <li><a href="#" ng-click="vm.digest.algo='sha256'">sha256</a></li>
                 </ul>
             </div>
-            <input type="text" class="form-control" aria-label="..." ng-model="vm.digest.src">
+            <input type="text" class="form-control" aria-label="..."
+                   ng-keydown="$event.which === 13 && vm.schedule(vm.digest)" ng-model="vm.digest.src">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" ng-click="vm.schedule(vm.digest)">hash</button>
             </span>
         </div>
     </div>
     <div class="alert alert-danger col-lg-12" ng-if="vm.error">
-      {{vm.error.error}}
-      <br>
-      {{vm.error.exception}}
-      <br>
-      <pre>{{vm.error.message}}</pre>
+        {{vm.error.error}}
+        <br>
+        {{vm.error.exception}}
+        <br>
+        <pre>{{vm.error.message}}</pre>
     </div>
 </div>

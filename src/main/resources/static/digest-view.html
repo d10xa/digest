@@ -1,9 +1,9 @@
 <div class="alert" ng-class="vm.alertClass" role="alert">
-    <button type="button" class="btn btn-xs btn-warning" ng-click="vm.cancel()"
+    <button type="button" class="btn btn-xs btn-warning" ng-mouseup="vm.cancel()"
             ng-disabled="!vm.isCancelable()">
         Cancel
     </button>
-    <button type="button" class="btn btn-xs btn-danger" ng-click="vm.remove()"
+    <button type="button" class="btn btn-xs btn-danger" ng-mouseup="vm.remove()"
             ng-disabled="!vm.isDeletable()">
         Delete
     </button>
@@ -21,7 +21,7 @@
     </div>
     <div ng-if="vm.task.status=='EXCEPTIONAL'">
         <strong>stacktrace:</strong>
-        <pre>{{vm.task.stacktrace}}</pre>
+        <div style="white-space: pre-wrap;font-family: monospace;">{{vm.task.stacktrace}}</div>
     </div>
     <br>
 </div>
