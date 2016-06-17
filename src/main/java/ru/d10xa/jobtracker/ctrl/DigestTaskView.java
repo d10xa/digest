@@ -1,77 +1,71 @@
 package ru.d10xa.jobtracker.ctrl;
 
 import ru.d10xa.jobtracker.job.Algo;
+import ru.d10xa.jobtracker.job.DigestTaskStatus;
 
 public class DigestTaskView {
 
+    private String id;
     private Algo algo;
     private String src;
     private String hash;
     private String stacktrace;
+    private DigestTaskStatus status;
     private Long elapsedSeconds;
-    private Boolean cancelled;
-    private Boolean done;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Algo getAlgo() {
         return algo;
     }
 
-    public DigestTaskView setAlgo(Algo algo) {
+    public void setAlgo(Algo algo) {
         this.algo = algo;
-        return this;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public DigestTaskView setHash(String hash) {
-        this.hash = hash;
-        return this;
-    }
-
-    public String getStacktrace() {
-        return stacktrace;
-    }
-
-    public DigestTaskView setStacktrace(String stacktrace) {
-        this.stacktrace = stacktrace;
-        return this;
-    }
-
-    public Long getElapsedSeconds() {
-        return elapsedSeconds;
-    }
-
-    public DigestTaskView setElapsedSeconds(Long elapsedSeconds) {
-        this.elapsedSeconds = elapsedSeconds;
-        return this;
     }
 
     public String getSrc() {
         return src;
     }
 
-    public DigestTaskView setSrc(String src) {
+    public void setSrc(String src) {
         this.src = src;
-        return this;
     }
 
-    public Boolean getCancelled() {
-        return cancelled;
+    public String getHash() {
+        return hash;
     }
 
-    public DigestTaskView setCancelled(Boolean cancelled) {
-        this.cancelled = cancelled;
-        return this;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
-    public Boolean getDone() {
-        return done;
+    public String getStacktrace() {
+        return stacktrace;
     }
 
-    public DigestTaskView setDone(Boolean done) {
-        this.done = done;
-        return this;
+    public void setStacktrace(String stacktrace) {
+        this.stacktrace = stacktrace;
+    }
+
+    public DigestTaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DigestTaskStatus status) {
+        this.status = status;
+    }
+
+    public Long getElapsedSeconds() {
+        return elapsedSeconds;
+    }
+
+    public void setElapsedSeconds(Long elapsedSeconds) {
+        this.elapsedSeconds = elapsedSeconds;
     }
 }

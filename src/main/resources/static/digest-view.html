@@ -1,0 +1,19 @@
+<div class="alert" ng-class = "vm.alertClass" role="alert">
+  <strong>Algo:</strong> {{vm.task.algo}}
+  <br>
+  <strong>URI:</strong> {{vm.task.src}}
+  <br>
+  <strong>status:</strong> {{vm.task.status}}
+  <br>
+
+  <strong>Elapsed time:</strong> {{vm.task.elapsedSeconds}} sec
+  <br>
+  <div ng-if="vm.task.status=='SUCCESS'">
+    <strong>Hash:</strong> {{vm.task.hash}}
+  </div>
+  <div ng-if="vm.task.status=='EXCEPTIONAL'">
+    <strong>stacktrace:</strong>
+    <pre>{{vm.task.stacktrace}}</pre>
+  </div>
+<br>
+</div>

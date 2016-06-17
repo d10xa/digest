@@ -53,16 +53,17 @@ public class DigestController {
                 .stream()
                 .map(toView())
                 .collect(Collectors.toList());
+        Collections.reverse(list);
         return Collections.singletonMap("tasks", list);
     }
 
     private Function<DigestTask, DigestTaskView> toView() {
         return (task) -> {
             DigestTaskView view = new DigestTaskView();
+            view.setId(task.getTaskId());
             view.setAlgo(task.getAlgo());
             view.setSrc(task.getSrc().toString());
-            view.setCancelled(task.isCancelled());
-            view.setDone(task.isDone());
+            view.setStatus(task.getStatus());
             view.setElapsedSeconds(task.elapsedTime(ChronoUnit.SECONDS));
             if (task.isDone()) {
                 try {

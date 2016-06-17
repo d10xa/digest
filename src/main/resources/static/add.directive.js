@@ -35,7 +35,17 @@
 
         function activate() {
            vm.digest = {algo:'md5'};
-           vm.schedule = Digest.schedule;
+           vm.schedule = function(digest){
+             Digest.schedule(digest)
+              .success(function(data){
+                console.log(data);
+                vm.error = null;
+              })
+              .error(function(data){
+                console.log(data);
+                vm.error = data;
+              })
+           };
         }
     }
 })();

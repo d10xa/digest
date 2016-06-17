@@ -16,4 +16,11 @@
             </span>
         </div>
     </div>
+    <div class="alert alert-danger col-lg-12" ng-if="vm.error">
+      {{vm.error.error}}
+      <br>
+      {{vm.error.exception}}
+      <br>
+      <pre>{{vm.error.message}}</pre>
+    </div>
 </div>

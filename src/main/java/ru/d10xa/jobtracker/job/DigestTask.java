@@ -7,19 +7,20 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-public class DigestTask extends FutureTask {
+public class DigestTask extends FutureTask<String> {
 
     private final String taskId = UUID.randomUUID().toString();
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private DigestData digestData;
+    private DigestTaskStatus status = DigestTaskStatus.NEW;
 
     public DigestTask(DigestData digestData, HexGenerator hexGenerator) {
         super(new DigestTaskCallable(digestData, hexGenerator));
         this.digestData = digestData;
     }
 
-    private static class DigestTaskCallable<T> implements Callable<String> {
+    private static class DigestTaskCallable implements Callable<String> {
 
         private final DigestData digestData;
 
@@ -49,12 +50,36 @@ public class DigestTask extends FutureTask {
     @Override
     public void run() {
         this.startTime = LocalDateTime.now();
+        this.status = DigestTaskStatus.IN_PROCESS;
         super.run();
+    }
+
+    @Override
+    protected void setException(Throwable t) {
+        super.setException(t);
+        this.status = DigestTaskStatus.EXCEPTIONAL;
+    }
+
+    @Override
+    protected void set(String string) {
+        super.set(string);
+        this.status = DigestTaskStatus.SUCCESS;
+    }
+
+    @Override
+    public boolean cancel(boolean mayInterruptIfRunning) {
+        boolean cancel = super.cancel(mayInterruptIfRunning);
+        this.status = DigestTaskStatus.INTERRUPTED;
+        return cancel;
     }
 
     @Override
     protected void done() {
         this.endTime = LocalDateTime.now();
+    }
+
+    public DigestTaskStatus getStatus() {
+        return status;
     }
 
     public String getTaskId() {

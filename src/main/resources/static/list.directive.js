@@ -25,21 +25,23 @@
         }
     }
 
-    ListController.$inject = ['Digest'];
+    ListController.$inject = ['Digest', '$interval'];
 
     /* @ngInject */
-    function ListController(Digest) {
+    function ListController(Digest, $interval) {
         var vm = this;
 
         activate();
 
         function activate() {
-            vm.refresh = function (){
-              Digest.getTasks().success(function(data){
-                vm.tasks = data.tasks;
-              });
-            };
-            vm.refresh();
+            refresh();
+            $interval(refresh, 700);
+        }
+
+        function refresh() {
+          Digest.getTasks().success(function(data){
+            vm.tasks = data.tasks;
+          });
         }
     }
 })();
