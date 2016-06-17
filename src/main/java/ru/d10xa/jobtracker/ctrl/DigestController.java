@@ -3,10 +3,8 @@ package ru.d10xa.jobtracker.ctrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.d10xa.jobtracker.exceptions.DigestTaskNotFoundException;
 import ru.d10xa.jobtracker.job.DigestData;
 import ru.d10xa.jobtracker.job.DigestTask;
 import ru.d10xa.jobtracker.job.DigestTasksContainer;
@@ -19,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -57,6 +56,25 @@ public class DigestController {
         return Collections.singletonMap("tasks", list);
     }
 
+    @RequestMapping(value = "/digest/tasks/{taskId}/cancel", method = RequestMethod.POST)
+    public ResponseEntity cancel(HttpSession httpSession, @PathVariable String taskId) {
+        DigestTasksContainer tasksContainer = hexService.getTasksContainer(httpSession.getId());
+        tasksContainer.cancel(taskId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/digest/tasks/{taskId}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(HttpSession httpSession, @PathVariable String taskId) {
+        DigestTasksContainer tasksContainer = hexService.getTasksContainer(httpSession.getId());
+        tasksContainer.remove(taskId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ExceptionHandler(DigestTaskNotFoundException.class)
+    public ResponseEntity handleNotFoundException() {
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
     private Function<DigestTask, DigestTaskView> toView() {
         return (task) -> {
             DigestTaskView view = new DigestTaskView();
@@ -68,7 +86,7 @@ public class DigestController {
             if (task.isDone()) {
                 try {
                     view.setHash(String.valueOf(task.get()));
-                } catch (InterruptedException e) {
+                } catch (CancellationException | InterruptedException e) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     e.printStackTrace(pw);

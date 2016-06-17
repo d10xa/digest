@@ -1,5 +1,7 @@
 package ru.d10xa.jobtracker.job;
 
+import ru.d10xa.jobtracker.exceptions.DigestTaskNotFoundException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,7 +40,7 @@ public class DigestTasksContainer {
                 .filter((t) -> Objects.equals(taskId, t.getTaskId()))
                 .findAny()
                 .orElseThrow(() ->
-                        new IllegalArgumentException("task not found by id " + taskId));
+                        new DigestTaskNotFoundException("task not found by id " + taskId));
     }
 
     public void remove(String taskId) {

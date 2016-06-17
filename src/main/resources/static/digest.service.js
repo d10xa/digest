@@ -11,7 +11,9 @@
     function Digest($http) {
         var service = {
             schedule: schedule,
-            getTasks: getTasks
+            getTasks: getTasks,
+            cancel: cancel,
+            remove: remove
         };
 
         return service;
@@ -22,6 +24,14 @@
         
         function getTasks() {
             return $http.get("/digest/tasks");
+        }
+
+        function cancel(taskId){
+            return $http.post(["/digest/tasks/", taskId, "/cancel"].join(''))
+        }
+
+        function remove(taskId){
+            return $http['delete'](["/digest/tasks/", taskId].join(''))
         }
     }
 })();

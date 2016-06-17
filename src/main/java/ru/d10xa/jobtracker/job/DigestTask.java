@@ -58,7 +58,9 @@ public class DigestTask extends FutureTask<String> {
         try {
             return super.get();
         } catch (Exception e) {
-            this.status = DigestTaskStatus.EXCEPTIONAL;
+            if (this.status == DigestTaskStatus.NEW || this.status == DigestTaskStatus.IN_PROCESS) {
+                this.status = DigestTaskStatus.EXCEPTIONAL;
+            }
             throw e;
         }
     }
@@ -68,7 +70,9 @@ public class DigestTask extends FutureTask<String> {
         try {
             return super.get(timeout, unit);
         } catch (Exception e) {
-            this.status = DigestTaskStatus.EXCEPTIONAL;
+            if (this.status == DigestTaskStatus.NEW || this.status == DigestTaskStatus.IN_PROCESS) {
+                this.status = DigestTaskStatus.EXCEPTIONAL;
+            }
             throw e;
         }
     }
@@ -76,7 +80,9 @@ public class DigestTask extends FutureTask<String> {
     @Override
     protected void set(String string) {
         super.set(string);
-        this.status = DigestTaskStatus.SUCCESS;
+        if (this.status == DigestTaskStatus.NEW || this.status == DigestTaskStatus.IN_PROCESS) {
+            this.status = DigestTaskStatus.SUCCESS;
+        }
     }
 
     @Override
