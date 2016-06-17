@@ -4,8 +4,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalUnit;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 public class DigestTask extends FutureTask<String> {
 
@@ -55,9 +54,23 @@ public class DigestTask extends FutureTask<String> {
     }
 
     @Override
-    protected void setException(Throwable t) {
-        super.setException(t);
-        this.status = DigestTaskStatus.EXCEPTIONAL;
+    public String get() throws InterruptedException, ExecutionException {
+        try {
+            return super.get();
+        } catch (Exception e) {
+            this.status = DigestTaskStatus.EXCEPTIONAL;
+            throw e;
+        }
+    }
+
+    @Override
+    public String get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            return super.get(timeout, unit);
+        } catch (Exception e) {
+            this.status = DigestTaskStatus.EXCEPTIONAL;
+            throw e;
+        }
     }
 
     @Override

@@ -30,10 +30,12 @@ class DigestTasksContainerSpec extends Specification {
         then:
         digestContainer.tasks.size() == 1
         !task.isDone()
+        task.status.with { it == NEW || it == IN_PROCESS }
         task.get() == "42"
         task.isDone()
         task.elapsedTime(ChronoUnit.MILLIS) > 100
         task.elapsedTime(ChronoUnit.MILLIS) < 150
+        task.status == DigestTaskStatus.SUCCESS
 
         cleanup:
         executor.shutdown()
@@ -54,6 +56,7 @@ class DigestTasksContainerSpec extends Specification {
         ExecutionException e = thrown()
         e.cause instanceof IOException
         e.cause.message == 'test'
+        task.status == DigestTaskStatus.EXCEPTIONAL
 
         cleanup:
         executor.shutdown()
@@ -73,6 +76,7 @@ class DigestTasksContainerSpec extends Specification {
         then:
         task.isCancelled()
         task.isDone()
+        task.status == DigestTaskStatus.INTERRUPTED
 
         and: 'remove task'
         digestContainer.remove(task.getTaskId())
