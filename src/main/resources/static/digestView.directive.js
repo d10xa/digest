@@ -36,8 +36,7 @@
         function activate() {
             vm.alertClass = {
                'alert-success': vm.task.status == "SUCCESS",
-               'alert-info': vm.task.status == "IN_PROCESS",
-               'alert-info': vm.task.status == "NEW",
+               'alert-info': vm.task.status == "IN_PROCESS" || vm.task.status == "NEW",
                'alert-warning': vm.task.status == "INTERRUPTED",
                'alert-danger': vm.task.status == "EXCEPTIONAL",
             };
