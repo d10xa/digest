@@ -32,7 +32,7 @@ public class DigestController {
     public ResponseEntity schedule(
             @RequestBody DigestScheduleRequest request, HttpSession httpSession) {
         if (request.getAlgo() == null || request.getSrc() == null) {
-            throw new IllegalArgumentException();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         this.hexService.schedule(httpSession.getId(), new DigestData(request.getAlgo(), request.getSrc()));
         return new ResponseEntity(HttpStatus.OK);
@@ -41,9 +41,6 @@ public class DigestController {
     @RequestMapping("/digest/tasks")
     public Map<String, List<DigestTaskView>> listTasks(HttpSession httpSession) {
         DigestTasksContainer tasksContainer = hexService.getTasksContainer(httpSession.getId());
-        if (tasksContainer == null) {
-            return Collections.singletonMap("tasks", Collections.emptyList());
-        }
         List<DigestTaskView> list = tasksContainer.getTasks()
                 .stream()
                 .map(this.digestTaskViewMapper)

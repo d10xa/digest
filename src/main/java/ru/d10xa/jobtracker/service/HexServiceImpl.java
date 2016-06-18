@@ -21,9 +21,7 @@ public class HexServiceImpl implements HexService {
 
     @Override
     public void schedule(String id, DigestData digestData) {
-        this.containers
-                .computeIfAbsent(id, (val) -> createContainer(id))
-                .add(digestData);
+        getTasksContainer(id).add(digestData);
     }
 
     private DigestTasksContainer createContainer(String id) {
@@ -32,7 +30,8 @@ public class HexServiceImpl implements HexService {
 
     @Override
     public DigestTasksContainer getTasksContainer(String id) {
-        return containers.get(id);
+        return this.containers
+                .computeIfAbsent(id, (val) -> createContainer(id));
     }
 
 }
