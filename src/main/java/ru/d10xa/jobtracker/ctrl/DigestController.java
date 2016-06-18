@@ -6,20 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.d10xa.jobtracker.exceptions.DigestTaskNotFoundException;
 import ru.d10xa.jobtracker.job.DigestData;
-import ru.d10xa.jobtracker.job.DigestTask;
 import ru.d10xa.jobtracker.job.DigestTasksContainer;
 import ru.d10xa.jobtracker.service.HexService;
 
 import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,9 +20,12 @@ public class DigestController {
 
     private final HexService hexService;
 
+    private final DigestTaskViewMapper digestTaskViewMapper;
+
     @Autowired
-    public DigestController(HexService hexService) {
+    public DigestController(HexService hexService, DigestTaskViewMapper digestTaskViewMapper) {
         this.hexService = hexService;
+        this.digestTaskViewMapper = digestTaskViewMapper;
     }
 
     @RequestMapping(value = "/digest/schedule", method = RequestMethod.POST)
@@ -50,7 +46,7 @@ public class DigestController {
         }
         List<DigestTaskView> list = tasksContainer.getTasks()
                 .stream()
-                .map(toView())
+                .map(this.digestTaskViewMapper)
                 .collect(Collectors.toList());
         Collections.reverse(list);
         return Collections.singletonMap("tasks", list);
@@ -73,33 +69,6 @@ public class DigestController {
     @ExceptionHandler(DigestTaskNotFoundException.class)
     public ResponseEntity handleNotFoundException() {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-    private Function<DigestTask, DigestTaskView> toView() {
-        return (task) -> {
-            DigestTaskView view = new DigestTaskView();
-            view.setId(task.getTaskId());
-            view.setAlgo(task.getAlgo());
-            view.setSrc(task.getSrc().toString());
-            view.setStatus(task.getStatus());
-            view.setElapsedSeconds(task.elapsedTime(ChronoUnit.SECONDS));
-            if (task.isDone()) {
-                try {
-                    view.setHash(String.valueOf(task.get()));
-                } catch (CancellationException | InterruptedException e) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    view.setStacktrace(sw.toString());
-                } catch (ExecutionException e) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.getCause().printStackTrace(pw);
-                    view.setStacktrace(sw.toString());
-                }
-            }
-            return view;
-        };
     }
 
 }
