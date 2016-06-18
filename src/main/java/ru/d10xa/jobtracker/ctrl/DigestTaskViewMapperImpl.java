@@ -17,12 +17,12 @@ public class DigestTaskViewMapperImpl implements DigestTaskViewMapper {
         DigestTaskView view = new DigestTaskView();
         view.setId(task.getTaskId());
         view.setAlgo(task.getAlgo());
-        view.setSrc(task.getSrc().toString());
+        view.setSrc(String.valueOf(task.getSrc()));
         view.setStatus(task.getStatus());
         view.setElapsedSeconds(task.elapsedTime(ChronoUnit.SECONDS));
         if (task.isDone()) {
             try {
-                view.setHash(String.valueOf(task.get()));
+                view.setHash(task.get());
             } catch (CancellationException | InterruptedException e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
