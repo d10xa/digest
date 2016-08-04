@@ -5,10 +5,10 @@
         .module('app')
         .factory('sessionId', sessionId);
 
-    sessionId.$inject = ['$http'];
+    sessionId.$inject = ['$http', 'serverUrl'];
 
     /* @ngInject */
-    function sessionId($http) {
+    function sessionId($http, serverUrl) {
         var service = {
             get: get
         };
@@ -16,7 +16,7 @@
         return service;
 
         function get() {
-            return $http.get('/session/id');
+            return $http.get(serverUrl + '/session/id');
         }
     }
 })();
