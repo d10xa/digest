@@ -1,10 +1,17 @@
 Digest job tracker
 ------------------
 
-Run:
+Install frontend dependencies
 
 ```bash
-./gradlew bootRun
+./gradlew npmInstall
+```
+
+Run spring-boot backend and angular frontend:
+
+```bash
+./gradlew npm_start bootRun --parallel
+
 ```
 
 Build:
