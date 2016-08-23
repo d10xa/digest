@@ -1,2 +1,3 @@
 rootProject.name = "digest-job-tracker"
-include 'frontend'
+include 'frontend-angular'
+include 'backend-springboot'
