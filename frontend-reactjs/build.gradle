@@ -1,0 +1,19 @@
+plugins {
+    id "com.moowork.node" version "0.13"
+}
+
+node {
+    version = '6.4.0'
+    npmVersion = '3.10.6'
+    download = true
+}
+
+task serverStart << {
+    def serverFactory = new SimpleHttpFileServerFactory()
+    def server = serverFactory.start(file("$projectDir.parent"), 0)
+    ext.server = server
+}
+
+task serverStop << {
+    serverStart.server.stop()
+}

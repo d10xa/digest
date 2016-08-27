@@ -1,3 +1,4 @@
 rootProject.name = "digest-job-tracker"
 include 'frontend-angular'
 include 'backend-springboot'
+include 'geb-specs'

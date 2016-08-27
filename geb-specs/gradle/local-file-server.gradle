@@ -1,0 +1,20 @@
+task serverStart << {
+    def serverFactory = new SimpleHttpFileServerFactory()
+    def server = serverFactory.start(file("$projectDir.parent/frontend-reactjs"), 0)
+    ext.server = server
+}
+
+test.dependsOn 'serverStart'
+
+test {
+    doFirst {
+        systemProperty "gradleServerPort", serverStart.server.port
+    }
+}
+
+task serverStop << {
+    serverStart.server.stop()
+}
+
+serverStart.finalizedBy 'serverStop'
+test.finalizedBy 'serverStop'
