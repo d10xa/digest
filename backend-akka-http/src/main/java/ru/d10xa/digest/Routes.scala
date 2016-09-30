@@ -12,16 +12,21 @@ object Routes extends {
 
   val SESSION_COOKIE_NAME = "JSESSIONID"
 
-  val route: Route = session(
-    path("session" / "id") {
-      optionalSessionCookie { session: Option[HttpCookiePair] =>
-        complete( ToResponseMarshallable(
-          HttpEntity(ContentTypes.`application/json`,
-            s"""{"id":"${session.get.value}"}"""
-          )))
-      }
+  val route: Route = optionalSessionCookie { cookie =>
+    var uuid = ""
+    cookie match {
+      case Some(b) =>
+        uuid = b.value
+      case None =>
+        uuid = UUID.randomUUID().toString
     }
-  )
+    setSessionCookie(uuid) {
+      complete(ToResponseMarshallable(
+        HttpEntity(ContentTypes.`application/json`,
+          s"""{"id":"$uuid"}"""
+        )))
+    }
+  }
 
   val sessionIdPath: Directive[Unit] = path("session" / "id")
 
