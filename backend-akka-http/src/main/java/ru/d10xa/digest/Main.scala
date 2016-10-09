@@ -6,6 +6,7 @@ import akka.stream.ActorMaterializer
 
 import scala.concurrent.ExecutionContextExecutor
 import akka.http.scaladsl.server.Directives._
+import ru.d10xa.digest.routes.Routes
 
 object Main extends App {
 
