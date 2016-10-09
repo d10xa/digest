@@ -5,19 +5,25 @@ version = '0.1.0'
 
 mainClassName = 'ru.d10xa.digest.Main'
 
-repositories{
+repositories {
     jcenter()
 }
 
-dependencies{
+dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile "org.scala-lang:scala-library:2.11.8"
     compile "org.scala-lang:scala-compiler:2.11.8"
     compile "com.typesafe.akka:akka-actor_2.11:2.4.10"
     compile "com.typesafe.akka:akka-http-experimental_2.11:2.4.10"
+    compile "de.heikoseeberger:akka-http-json4s_2.11:1.10.1"
+    compile 'org.json4s:json4s-native_2.11:3.4.1'
     compile "org.skinny-framework:skinny-http-client_2.11:2.2.0"
 
     testCompile "junit:junit:4.12"
+}
+
+run {
+    systemProperty "port", "8090"
 }
 
 task fatJar(type: Jar) {

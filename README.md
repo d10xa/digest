@@ -14,6 +14,11 @@ Run spring-boot backend and angular frontend:
 
 ```
 
+Run akka-http backend and angular frontend:
+```bash
+./gradlew npmInstall npm_start :backend-akka-http:run --parallel
+```
+
 Build:
 
 ```bash

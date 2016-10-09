@@ -13,10 +13,10 @@ object Main extends App {
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
   implicit val materializer = ActorMaterializer()
 
-  Http().bindAndHandle(
-    Routes.route,
-    sys.props.getOrElse("host", "localhost"),
-    sys.props.getOrElse("port", "8080").toInt
-  )
+  val port: Int = sys.props.getOrElse("port", "8080").toInt
+  val host: String = sys.props.getOrElse("host", "localhost")
 
+  Http().bindAndHandle(Routes.route, host, port)
+
+  println(s"server start at $host $port")
 }
