@@ -5,11 +5,15 @@ import java.util.UUID
 import akka.http.scaladsl.model.headers.{HttpCookie, HttpCookiePair}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
+import org.json4s.DefaultFormats
 import org.json4s.native.Serialization._
 
-object Session {
+object SessionRoute {
 
   val SESSION_COOKIE_NAME = "JSESSIONID"
+
+  implicit val formats =
+    DefaultFormats
 
   def session(r: Route): Route = optionalSessionCookie {
     case Some(b) =>
