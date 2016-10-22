@@ -32,22 +32,23 @@ object SessionRoute {
   private def setSessionCookie(sessionId: String): Directive0 =
     setCookie(HttpCookie(SESSION_COOKIE_NAME, sessionId))
 
-
   val route: Route = path("session" / "id") {
-    optionalSessionCookie { cookie =>
-      var uuid = ""
-      cookie match {
-        case Some(b) =>
-          uuid = b.value
-        case None =>
-          uuid = UUID.randomUUID().toString
-      }
-      setSessionCookie(uuid) {
-        complete(write(SessionIdDto(uuid)))
+    get {
+      optionalSessionCookie { cookie =>
+        var uuid = ""
+        cookie match {
+          case Some(b) =>
+            uuid = b.value
+          case None =>
+            uuid = UUID.randomUUID().toString
+        }
+        setSessionCookie(uuid) {
+          complete(write(SessionIdDto(uuid)))
+        }
       }
     }
   }
 
-}
+  case class SessionIdDto(id: String)
 
-case class SessionIdDto(id: String)
+}
